@@ -9,8 +9,19 @@ router.get('/', (req, res, next) => {
         .select('-__v')
         .exec()
         .then(result => {
-            console.log(result);
-            res.status(200).json(result);
+            const response = {
+                count: result.length,
+                weapons: result.map(weapon => {
+                    return {
+                        ...weapon.toJSON(),
+                        request: {
+                            type: 'GET',
+                            url: req.get('host') + '/weapon/' + weapon._id,
+                        }
+                    }
+                })
+            };
+            res.status(200).json(response);
         }).catch(err => {
             console.log(err);
             res.status(500).json({
