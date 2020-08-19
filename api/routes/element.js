@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
                         ...element.toJSON(),
                         request: {
                             type: 'GET',
-                            url: req.get('host') + '/element/' + element._id
+                            url: req.protocol + '://' + req.get('host') + '/element/' + element._id
                         }
                     }
                 })
@@ -43,7 +43,7 @@ router.post('/', (req, res, next) => {
                     ...result.toJSON,
                     request: {
                         type: 'GET',
-                        url: req.get('host') + '/element/' + result._id,
+                        url: req.protocol + '://' + req.get('host') + '/element/' + result._id,
                     }
                 }
             };

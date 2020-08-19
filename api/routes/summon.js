@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
                         ...summon.toJSON(),
                         request: {
                             type: 'GET',
-                            url: req.get('host') + '/summon/' + summon._id,
+                            url: req.protocol + '://' + req.get('host') + '/summon/' + summon._id,
                         }
                     }
                 })
@@ -43,7 +43,7 @@ router.post('/', (req, res, next) => {
             message: 'Created summon successfully.',
             request: {
                 type: 'GET',
-                url: req.get('host') + '/´summon/' + result._id,
+                url: req.protocol + '://' + req.get('host') + '/´summon/' + result._id,
             }
         };
         res.status(201).json(response);

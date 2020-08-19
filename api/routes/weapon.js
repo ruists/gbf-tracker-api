@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
                         ...weapon.toJSON(),
                         request: {
                             type: 'GET',
-                            url: req.get('host') + '/weapon/' + weapon._id,
+                            url: req.protocol + '://' + req.get('host') + '/weapon/' + weapon._id,
                         }
                     }
                 })
@@ -48,7 +48,7 @@ router.post('/', (req, res, next) => {
                 ...result.toJSON(),
                 request: {
                     type: 'GET',
-                    url: req.get('host') + '/weapon/' + result._id,
+                    url: req.protocol + '://' + req.get('host') + '/weapon/' + result._id,
                 }
             }
         };

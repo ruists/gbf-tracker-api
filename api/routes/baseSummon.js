@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
                         ...baseSummon.toJSON(),
                         request: {
                             type: 'GET',
-                            url: req.get('host') + '/baseSummon/' + baseSummon._id,
+                            url: req.protocol + '://' + req.get('host') + '/baseSummon/' + baseSummon._id,
                         }
                     }
                 })
@@ -48,7 +48,7 @@ router.post('/', (req, res, next) => {
                     ...result.toJSON(),
                     request: {
                         type: 'GET',
-                        url: req.get('host') + '/baseSummon/' + result._id,
+                        url: req.protocol + '://' + req.get('host') + '/baseSummon/' + result._id,
                     }
                 }
             };

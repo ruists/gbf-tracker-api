@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
                         ...style.toJSON(),
                         request: {
                             type: 'GET',
-                            url: req.get('host') + '/style/' + style._id,
+                            url: req.protocol + '://' + req.get('host') + '/style/' + style._id,
                         }
                     }
                 })
@@ -41,7 +41,7 @@ router.post('/', (req, res, next) => {
                 message: 'Created style successfully.',
                 request: {
                     type: 'GET',
-                    url: req.get('host') + '/style/' + result._id,
+                    url: req.protocol + '://' + req.get('host') + '/style/' + result._id,
                 }
             };
             res.status(201).json(response);
