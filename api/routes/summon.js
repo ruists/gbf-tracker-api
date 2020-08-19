@@ -39,8 +39,14 @@ router.post('/', (req, res, next) => {
         active: true
     });
     summon.save().then(result => {
-        console.log(result);
-        res.status(201).json(result);
+        const response = {
+            message: 'Created summon successfully.',
+            request: {
+                type: 'GET',
+                url: req.get('host') + '/´summon/' + result._id,
+            }
+        };
+        res.status(201).json(response);
     }).catch(err => {
         console.log(err);
         res.status(500).json({
@@ -51,7 +57,9 @@ router.post('/', (req, res, next) => {
 
 router.get('/:summonId', (req, res, next) => {
     const id = req.params.summonId;
-    Summon.findById(id).exec()
+    Summon.findById(id)
+        .select('-__v')
+        .exec()
         .then(result => {
             console.log(result);
             if (result) {

@@ -42,7 +42,17 @@ router.post('/', (req, res, next) => {
 
     baseSummon.save()
         .then(result => {
-            res.status(201).json(result);
+            const response = {
+                message: 'Created base summon successfully.',
+                baseSummon: {
+                    ...result.toJSON(),
+                    request: {
+                        type: 'GET',
+                        url: req.get('host') + '/baseSummon/' + result._id,
+                    }
+                }
+            };
+            res.status(201).json(response);
         }).catch(err => {
             console.log(err);
             res.status(500).json({

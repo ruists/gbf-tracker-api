@@ -37,8 +37,14 @@ router.post('/', (req, res, next) => {
     });
     style.save()
         .then(result => {
-            console.log(result);
-            res.status(201).json(result);
+            const response = {
+                message: 'Created style successfully.',
+                request: {
+                    type: 'GET',
+                    url: req.get('host') + '/style/' + result._id,
+                }
+            };
+            res.status(201).json(response);
         }).catch(err => {
             console.log(err);
             res.status(500).json({

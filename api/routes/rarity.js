@@ -37,8 +37,17 @@ router.post('/', (req, res, next) => {
     });
     rarity.save()
         .then(result => {
-            console.log(result);
-            res.status(201).json(result);
+            const response = {
+                message: 'Created rarity successfully.',
+                rarity: {
+                    ...result.toJSON(),
+                    request: {
+                        type: 'GET',
+                        url: req.get('host') + '/rarity/' + result._id,
+                    }
+                }
+            };
+            res.status(201).json(response);
         }).catch(err => {
             console.log(err);
             res.status(500).json({

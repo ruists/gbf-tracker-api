@@ -37,7 +37,16 @@ router.post('/', (req, res, next) => {
     });
     weaponType.save()
         .then(result => {
-            console.log(result);
+            const response = {
+                message: 'Created weapon type successfully.',
+                weaponType: {
+                    ...result.toJSON(),
+                    request: {
+                        type: 'GET',
+                        url: req.get('host') + '/weaponType/' + result._id,
+                    }
+                }
+            };
             res.status(201).json(result);
         }).catch(err => {
             console.log(err);

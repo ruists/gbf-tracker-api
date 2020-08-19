@@ -42,8 +42,17 @@ router.post('/', (req, res, next) => {
         weaponType: req.body.weaponType
     });
     character.save().then(result => {
-        console.log(result);
-        res.status(201).json(result);
+        const response = {
+            message: 'Created character successfully',
+            character: {
+                ...result.toJSON(),
+                request: {
+                    type: 'GET',
+                    url: req.get('host') + '/character/' + result._id,
+                }
+            }
+        };
+        res.status(201).json(response);
     }).catch(err => {
         console.log(err);
         res.status(500).json({

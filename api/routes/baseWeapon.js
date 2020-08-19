@@ -42,8 +42,17 @@ router.post('/', (req, res, next) => {
         rarity: req.body.rarity
     });
     baseWeapon.save().then(result => {
-        console.log(result);
-        res.status(201).json(result);
+        const response = {
+            message: 'Create base weapon successfully.',
+            baseWeapon: {
+                ...result.toJSON(),
+                request: {
+                    type: 'GET',
+                    url: req.get('host') + '/baseWeapon/' + result._id,
+                }
+            }
+        };
+        res.status(201).json(response);
     }).catch(err => {
         console.log(err);
         res.status(500).json({
