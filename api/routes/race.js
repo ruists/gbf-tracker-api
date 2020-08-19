@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
                         ...race.toJSON(),
                         request: {
                             type: 'GET',
-                            url: req.get('host') + '/race/' + race._id,
+                            url: req.protocol + '://' + req.get('host') + '/race/' + race._id,
                         }
                     }
                 })
@@ -43,7 +43,7 @@ router.post('/', (req, res, next) => {
                     ...race.toJSON(),
                     request: {
                         type: 'GET',
-                        url: req.get('host') + '/race/' + result._id,
+                        url: req.protocol + '://' + req.get('host') + '/race/' + result._id,
                     }
                 }
             };
@@ -58,7 +58,9 @@ router.post('/', (req, res, next) => {
 
 router.get('/:raceId', (req, res, next) => {
     const id = req.params.raceId;
-    Race.findById(id).exec()
+    Race.findById(id)
+        .select('-__v')
+        .exec()
         .then(result => {
             console.log(result);
             if (result) {

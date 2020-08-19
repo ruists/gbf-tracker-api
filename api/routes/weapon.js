@@ -63,7 +63,9 @@ router.post('/', (req, res, next) => {
 
 router.get('/:weaponId', (req, res, next) => {
     const id = req.params.weaponId;
-    Weapon.findById(id).exec()
+    Weapon.findById(id)
+        .select('-__v')
+        .exec()
         .then(result => {
             console.log(result);
             if (result) {

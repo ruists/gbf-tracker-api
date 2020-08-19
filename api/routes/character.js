@@ -63,7 +63,9 @@ router.post('/', (req, res, next) => {
 
 router.get('/:characterId', (req, res, next) => {
     const id = req.params.characterId;
-    Character.findById(id).exec()
+    Character.findById(id)
+        .select('-__v')
+        .exec()
         .then(result => {
             console.log(result);
             if (result) {

@@ -58,7 +58,9 @@ router.post('/', (req, res, next) => {
 
 router.get('/:elementId', (req, res, next) => {
     const id = req.params.elementId;
-    Element.findById(id).exec()
+    Element.findById(id)
+        .select('-__v')
+        .exec()
         .then(result => {
             console.log(result);
             if (result) {

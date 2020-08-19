@@ -55,7 +55,9 @@ router.post('/', (req, res, next) => {
 
 router.get('/:styleId', (req, res, next) => {
     const id = req.params.styleId;
-    Style.findById(id).exec()
+    Style.findById(id)
+        .select('-__v')
+        .exec()
         .then(result => {
             console.log(result);
             if (result) {

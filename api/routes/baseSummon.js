@@ -63,7 +63,9 @@ router.post('/', (req, res, next) => {
 
 router.get('/:baseSummonId', (req, res, next) => {
     const id = req.params.BaseSummonId;
-    BaseSummon.findById(id).exec()
+    BaseSummon.findById(id)
+        .select('-__v')
+        .exec()
         .then(result => {
             if (result) {
                 res.status(200).json(result);

@@ -58,7 +58,9 @@ router.post('/', (req, res, next) => {
 
 router.get('/:weaponTypeId', (req, res, next) => {
     const id = req.params.weaponTypeId;
-    WeaponType.findById(id).exec()
+    WeaponType.findById(id)
+        .select('-__v')
+        .exec()
         .then(result => {
             console.log(result);
             if (result) {

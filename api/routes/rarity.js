@@ -58,7 +58,9 @@ router.post('/', (req, res, next) => {
 
 router.get('/:rarityId', (req, res, next) => {
     const id = req.params.rarityId;
-    Rarity.findById(id).exec()
+    Rarity.findById(id)
+        .select('-__v')
+        .exec()
         .then(result => {
             console.log(result);
             if (result) {
