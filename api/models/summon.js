@@ -19,7 +19,8 @@ const summonSchema = mongoose.Schema({
     },
     active: {
         type: Boolean,
-        required: true
+        required: true,
+        default: true
     }
 }, {
     collection: 'Summon'
