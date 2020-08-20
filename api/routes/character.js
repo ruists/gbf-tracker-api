@@ -23,7 +23,6 @@ router.get('/', (req, res, next) => {
             };
             res.status(200).json(response);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
@@ -55,7 +54,6 @@ router.post('/', (req, res, next) => {
         };
         res.status(201).json(response);
     }).catch(err => {
-        console.log(err);
         res.status(500).json({
             error: err
         });
@@ -81,13 +79,13 @@ router.get('/:characterId', (req, res, next) => {
                 });
             }
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
         });
 });
 
+//TODO: TEST
 router.patch('/:characterId', (req, res, next) => {
     const id = req.params.characterId;
     const updateOps = {};
@@ -110,7 +108,6 @@ router.patch('/:characterId', (req, res, next) => {
             };
             res.status(200).json(response);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
@@ -123,10 +120,8 @@ router.delete('/:characterId', (req, res, next) => {
             _id: id
         }).exec()
         .then(result => {
-            console.log(result);
             res.status(200).json(result);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });

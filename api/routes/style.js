@@ -79,6 +79,7 @@ router.get('/:styleId', (req, res, next) => {
         });
 });
 
+//TODO: TEST
 router.patch('/:styleId', (req, res, next) => {
     const id = req.params.styleId;
     const updateOps = {};
@@ -116,7 +117,6 @@ router.delete('/:styleId', (req, res, next) => {
         .then(result => {
             res.status(200).json(result);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });

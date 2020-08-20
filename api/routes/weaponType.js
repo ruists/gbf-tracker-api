@@ -82,6 +82,7 @@ router.get('/:weaponTypeId', (req, res, next) => {
         });
 });
 
+//TODO: TEST
 router.patch('/:weaponTypeId', (req, res, next) => {
     const id = req.params.weaponTypeId;
     const updateOps = {};

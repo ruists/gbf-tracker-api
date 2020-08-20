@@ -36,7 +36,7 @@ router.post('/', (req, res, next) => {
         .exec()
         .then(baseWeapon => {
             if (!baseWeapon) {
-                res.status(500).json({
+                return res.status(500).json({
                     message: 'Base weapon not found.'
                 });
             }
@@ -93,6 +93,7 @@ router.get('/:weaponId', (req, res, next) => {
         });
 });
 
+//TODO: TEST
 router.patch('/:weaponId', (req, res, next) => {
     const id = req.params.weaponId;
     const updateOps = {};
@@ -128,10 +129,8 @@ router.delete('/:weaponId', (req, res, next) => {
             _id: id
         }).exec()
         .then(result => {
-            console.log(result);
             res.status(200).json(result);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });

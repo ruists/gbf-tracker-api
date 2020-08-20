@@ -91,6 +91,7 @@ router.get('/:summonId', (req, res, next) => {
         });
 });
 
+//TODO: TEST
 router.patch('/:summonId', (req, res, next) => {
     const id = req.params.summonId;
     const updateOps = {};
@@ -126,10 +127,8 @@ router.delete('/:summonId', (req, res, next) => {
             _id: id
         }).exec()
         .then(result => {
-            console.log(result);
             res.status(200).json(result);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });

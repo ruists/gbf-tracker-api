@@ -23,7 +23,6 @@ router.get('/', (req, res, next) => {
             };
             res.status(200).json(response);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
@@ -49,7 +48,6 @@ router.post('/', (req, res, next) => {
             };
             res.status(201).json(response);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
@@ -75,13 +73,13 @@ router.get('/:raceId', (req, res, next) => {
                 });
             }
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
         });
 });
 
+//TODO: TEST
 router.patch('/:raceId', (req, res, next) => {
     const id = req.params.raceId;
     const updateOps = {};
@@ -104,7 +102,6 @@ router.patch('/:raceId', (req, res, next) => {
             };
             res.status(200).json(response);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
@@ -119,7 +116,6 @@ router.delete('/:raceId', (req, res, next) => {
         .then(result => {
             res.status(200).json(result);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
