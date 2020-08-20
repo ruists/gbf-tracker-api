@@ -62,9 +62,13 @@ router.get('/:raceId', (req, res, next) => {
         .select('-__v')
         .exec()
         .then(result => {
-            console.log(result);
             if (result) {
-                res.status(200).json(result);
+                const response = {
+                    race: {
+                        ...result.toJSON()
+                    }
+                };
+                res.status(200).json(response);
             } else {
                 res.status(404).json({
                     message: 'No valid entry found for provided ID.'

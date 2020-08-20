@@ -68,7 +68,12 @@ router.get('/:baseSummonId', (req, res, next) => {
         .exec()
         .then(result => {
             if (result) {
-                res.status(200).json(result);
+                const response = {
+                    baseSummon: {
+                        ...result.toJSON()
+                    }
+                };
+                res.status(200).json(response);
             } else {
                 res.status(404).json({
                     message: 'No valid entry found for provided ID.'
