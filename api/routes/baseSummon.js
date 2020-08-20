@@ -3,6 +3,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const BaseSummon = require('../models/baseSummon');
+const Element = require('../models/element');
+const Rarity = require('../models/rarity');
 
 router.get('/', (req, res, next) => {
     BaseSummon.find()
@@ -30,32 +32,51 @@ router.get('/', (req, res, next) => {
         });
 });
 
+//TODO: avoid promise nesting
 router.post('/', (req, res, next) => {
-    const baseSummon = new BaseSummon({
-        _id: new mongoose.Types.ObjectId(),
-        name: req.body.name,
-        maxUncap: req.body.maxUncap,
-        imgUrl: req.body.imgUrl,
-        element: req.body.element,
-        rarity: req.body.rarity
-    });
+    Element.findById(req.body.elementId)
+        .exec()
+        .then(element => {
+            Rarity.findById(req.body.rarityId)
+                .exec()
+                .then(rarity => {
+                    const baseSummon = new BaseSummon({
+                        _id: new mongoose.Types.ObjectId(),
+                        name: req.body.name,
+                        maxUncap: req.body.maxUncap,
+                        imgUrl: req.body.imgUrl,
+                        element: req.body.elementId,
+                        rarity: req.body.rarityId
+                    });
 
-    baseSummon.save()
-        .then(result => {
-            const response = {
-                message: 'Created base summon successfully.',
-                baseSummon: {
-                    ...result.toJSON(),
-                    request: {
-                        type: 'GET',
-                        url: req.protocol + '://' + req.get('host') + '/baseSummon/' + result._id,
-                    }
-                }
-            };
-            res.status(201).json(response);
+                    baseSummon.save()
+                        .then(result => {
+                            const response = {
+                                message: 'Created base summon successfully.',
+                                baseSummon: {
+                                    ...result.toJSON(),
+                                    request: {
+                                        type: 'GET',
+                                        url: req.protocol + '://' + req.get('host') + '/baseSummon/' + result._id,
+                                    }
+                                }
+                            };
+                            res.status(201).json(response);
+                        }).catch(err => {
+                            console.log(err);
+                            res.status(500).json({
+                                error: err
+                            });
+                        });
+                }).catch(err => {
+                    res.status(500).json({
+                        message: 'Rarity not found.',
+                        error: err
+                    });
+                });
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
+                message: 'Element not found.',
                 error: err
             });
         });

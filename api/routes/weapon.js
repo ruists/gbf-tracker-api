@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const Weapon = require('../models/weapon');
+const BaseWeapon = require('../models/baseWeapon');
 
 router.get('/', (req, res, next) => {
     Weapon.find()
@@ -31,34 +32,39 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-    const weapon = new Weapon({
-        _id: new mongoose.Types.ObjectId(),
-        name: req.body.name,
-        level: req.body.level,
-        uncap: req.body.uncap,
-        element: req.body.element,
-        rarity: req.body.rarity,
-        style: req.body.style,
-        weaponType: req.body.weaponType
-    });
-    weapon.save().then(result => {
-        const response = {
-            message: 'Created weapon successfully.',
-            weapon: {
-                ...result.toJSON(),
-                request: {
-                    type: 'GET',
-                    url: req.protocol + '://' + req.get('host') + '/weapon/' + result._id,
-                }
+    BaseWeapon.findById(req.body.baseWeaponId)
+        .exec()
+        .then(baseWeapon => {
+            if (!baseWeapon) {
+                res.status(500).json({
+                    message: 'Base weapon not found.'
+                });
             }
-        };
-        res.status(201).json(response);
-    }).catch(err => {
-        console.log(err);
-        res.status(500).json({
-            error: err
+            const weapon = new Weapon({
+                _id: new mongoose.Types.ObjectId(),
+                uncap: req.body.uncap,
+                level: req.body.level,
+                skillLevel: req.body.skillLevel,
+                baseWeapon = baseWeapon._id
+            });
+            return weapon.save();
+        }).then(result => {
+            const response = {
+                message: 'Created weapon successfully.',
+                weapon: {
+                    ...result.toJSON(),
+                    request: {
+                        type: 'GET',
+                        url: req.protocol + '://' + req.get('host') + '/weapon/' + result._id,
+                    }
+                }
+            };
+            res.status(201).json(response);
+        }).catch(err => {
+            res.status(500).json({
+                error: err
+            });
         });
-    });
 });
 
 router.get('/:weaponId', (req, res, next) => {

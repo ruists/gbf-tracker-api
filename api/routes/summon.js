@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const Summon = require('../models/summon');
+const BaseSummon = require('../models/baseSummon');
 
 router.get('/', (req, res, next) => {
     Summon.find()
@@ -30,29 +31,38 @@ router.get('/', (req, res, next) => {
         });
 });
 
+//TODO: TEST
 router.post('/', (req, res, next) => {
-    const summon = new Summon({
-        _id: new mongoose.Types.ObjectId,
-        uncap: req.body.uncap,
-        level: req.body.level,
-        baseSummon: req.body.baseSummon,
-        active: true
-    });
-    summon.save().then(result => {
-        const response = {
-            message: 'Created summon successfully.',
-            request: {
-                type: 'GET',
-                url: req.protocol + '://' + req.get('host') + '/´summon/' + result._id,
+    BaseSummon.findById(req.body.baseSummonId)
+        .exec()
+        .then(baseSummon => {
+            if (!baseSummon) {
+                return res.status(500).json({
+                    message: 'Base summon not found.'
+                });
             }
-        };
-        res.status(201).json(response);
-    }).catch(err => {
-        console.log(err);
-        res.status(500).json({
-            error: err
+            const summon = new Summon({
+                _id: new mongoose.Types.ObjectId,
+                uncap: req.body.uncap,
+                level: req.body.level,
+                baseSummon: baseSummon._id,
+                active: true
+            });
+            return summon.save();
+        }).then(result => {
+            const response = {
+                message: 'Created summon successfully.',
+                request: {
+                    type: 'GET',
+                    url: req.protocol + '://' + req.get('host') + '/´summon/' + result._id,
+                }
+            };
+            res.status(201).json(response);
+        }).catch(err => {
+            res.status(500).json({
+                error: err
+            });
         });
-    });
 });
 
 router.get('/:summonId', (req, res, next) => {

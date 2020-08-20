@@ -30,16 +30,17 @@ router.get('/', (req, res, next) => {
         });
 });
 
+//TODO: check if required objects already exist
 router.post('/', (req, res, next) => {
     const character = new Character({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         level: req.body.level,
         uncap: req.body.uncap,
-        element: req.body.element,
-        rarity: req.body.rarity,
-        style: req.body.style,
-        weaponType: req.body.weaponType
+        element: req.body.elementId,
+        rarity: req.body.rarityId,
+        style: req.body.styleId,
+        weaponType: req.body.weaponTypeId
     });
     character.save().then(result => {
         const response = {
