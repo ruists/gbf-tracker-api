@@ -94,6 +94,13 @@ router.patch('/:baseSummonId', (req, res, next) => {
             $set: updateOps
         }).exec()
         .then(result => {
+            const response = {
+                message: 'Base summon updated.',
+                request: {
+                    type: 'GET',
+                    url: req.protocol + '://' + req.get('host') + '/baseSummon/' + id,
+                }
+            };
             res.status(200).json(result);
         }).catch(err => {
             console.log(err);

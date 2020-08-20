@@ -86,8 +86,14 @@ router.patch('/:styleId', (req, res, next) => {
         }, {
             $set: updateOps
         }).exec()
-        .then(response => {
-            console.log(response);
+        .then(result => {
+            const response = {
+                message: 'Style updated.',
+                request: {
+                    type: 'GET',
+                    url: req.protocol + '://' + req.get('host') + '/style/' + id,
+                }
+            };
             res.status(200).json(response);
         }).catch(err => {
             console.log(err);
