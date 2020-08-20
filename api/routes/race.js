@@ -81,8 +81,9 @@ router.get('/:raceId', (req, res, next) => {
 router.patch('/:raceId', (req, res, next) => {
     const id = req.params.raceId;
     const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value;
+    const keys = Object.keys(req.body);
+    for (const key of keys) {
+        updateOps[key] = req.body[key];
     }
     Race.update({
             _id: id

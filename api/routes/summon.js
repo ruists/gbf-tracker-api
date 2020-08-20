@@ -80,8 +80,9 @@ router.get('/:summonId', (req, res, next) => {
 router.patch('/:summonId', (req, res, next) => {
     const id = req.params.summonId;
     const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value;
+    const keys = Object.keys(req.body);
+    for (const key of keys) {
+        updateOps[key] = req.body[key];
     }
     Summon.update({
             _id: id

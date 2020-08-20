@@ -86,8 +86,9 @@ router.get('/:characterId', (req, res, next) => {
 router.patch('/:characterId', (req, res, next) => {
     const id = req.params.characterId;
     const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value;
+    const keys = Object.keys(req.body);
+    for (const key of keys) {
+        updateOps[key] = req.body[key];
     }
     Character.update({
             _id: id

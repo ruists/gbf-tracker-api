@@ -85,8 +85,9 @@ router.get('/:baseSummonId', (req, res, next) => {
 router.patch('/:baseSummonId', (req, res, next) => {
     const id = req.params.BaseSummonId;
     const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value;
+    const keys = Object.keys(req.body);
+    for (const key of keys) {
+        updateOps[key] = req.body[key];
     }
     BaseSummon.update({
             _id: id

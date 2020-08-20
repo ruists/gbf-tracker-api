@@ -86,8 +86,9 @@ router.get('/:baseWeaponId', (req, res, next) => {
 router.patch('/:baseWeaponId', (req, res, next) => {
     const id = req.params.baseWeaponId;
     const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value;
+    const keys = Object.keys(req.body);
+    for (const key of keys) {
+        updateOps[key] = req.body[key];
     }
     BaseWeapon.update({
             _id: id

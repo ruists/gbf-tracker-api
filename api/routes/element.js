@@ -81,8 +81,9 @@ router.get('/:elementId', (req, res, next) => {
 router.patch('/:elementId', (req, res, next) => {
     const id = req.params.elementId;
     const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value;
+    const keys = Object.keys(req.body);
+    for (const key of keys) {
+        updateOps[key] = req.body[key];
     }
     Element.update({
             _id: id
