@@ -3,6 +3,10 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const Character = require('../models/character');
+const Element = require('../models/element');
+const Rarity = require('../models/rarity');
+const Style = require('../models/style');
+const WeaponType = require('../models/weaponType');
 
 router.get('/', (req, res, next) => {
     Character.find()
@@ -29,35 +33,65 @@ router.get('/', (req, res, next) => {
         });
 });
 
-//TODO: check if required objects already exist
+//TODO: Consider characters that have 2 weapon types
 router.post('/', (req, res, next) => {
-    const character = new Character({
-        _id: new mongoose.Types.ObjectId(),
-        name: req.body.name,
-        level: req.body.level,
-        uncap: req.body.uncap,
-        element: req.body.elementId,
-        rarity: req.body.rarityId,
-        style: req.body.styleId,
-        weaponType: req.body.weaponTypeId
-    });
-    character.save().then(result => {
-        const response = {
-            message: 'Created character successfully',
-            character: {
-                ...result.toJSON(),
-                request: {
-                    type: 'GET',
-                    url: req.protocol + '://' + req.get('host') + '/character/' + result._id,
-                }
+    Element.findById(req.body.elementId).exec()
+        .then(element => {
+            if (!element) {
+                return res.status(500).json({
+                    message: 'Element not found.'
+                });
             }
-        };
-        res.status(201).json(response);
-    }).catch(err => {
-        res.status(500).json({
-            error: err
+            return Rarity.findById(req.body.rarityId).exec();
+        }).then(rarity => {
+            if (!rarity) {
+                return res.status(500).json({
+                    message: 'Rarity not found.'
+                });
+            }
+            return Style.findById(req.body.styleId).exec();
+        }).then(style => {
+            if (!style) {
+                return res.status(500).json({
+                    message: 'Style not found.'
+                });
+            }
+            return WeaponType.findById(req.body.weaponTypeId).exec();
+        }).then(weaponType => {
+            if (!weaponType) {
+                return res.status(500).json({
+                    message: 'Weapon type not found.'
+                });
+            }
+
+            const character = new Character({
+                _id: new mongoose.Types.ObjectId(),
+                name: req.body.name,
+                level: req.body.level,
+                uncap: req.body.uncap,
+                element: req.body.elementId,
+                rarity: req.body.rarityId,
+                style: req.body.styleId,
+                weaponType: req.body.weaponTypeId
+            });
+            return character.save();
+        }).then(result => {
+            const response = {
+                message: 'Created character successfully',
+                character: {
+                    ...result.toJSON(),
+                    request: {
+                        type: 'GET',
+                        url: req.protocol + '://' + req.get('host') + '/character/' + result._id,
+                    }
+                }
+            };
+            res.status(201).json(response);
+        }).catch(err => {
+            res.status(500).json({
+                error: err
+            });
         });
-    });
 });
 
 router.get('/:characterId', (req, res, next) => {
