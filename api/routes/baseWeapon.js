@@ -33,61 +33,57 @@ router.get('/', (req, res, next) => {
         });
 });
 
-//TODO: avoid promise nesting
+//TODO: TEST
 router.post('/', (req, res, next) => {
-    Element.findById(req.body.elementId)
-        .exec()
+    Element.findById(req.body.elementId).exec()
         .then(element => {
-            WeaponType.findById(req.body.weaponTypeId)
-                .exec()
-                .then(weaponType => {
-                    Rarity.findById(req.body.rarityId)
-                        .exec()
-                        .then(rarity => {
-                            const baseWeapon = new BaseWeapon({
-                                _id: new mongoose.Types.ObjectId(),
-                                name: req.body.name,
-                                maxUncap: req.body.maxUncap,
-                                imgUrl: req.body.imgUrl,
-                                usesSkillLevel: req.body.usesSkillLevel,
-                                element: req.body.elementId,
-                                weaponType: req.body.weaponTypeId,
-                                rarity: req.body.rarityId
-                            });
-                            baseWeapon.save()
-                                .then(result => {
-                                    const response = {
-                                        message: 'Create base weapon successfully.',
-                                        baseWeapon: {
-                                            ...result.toJSON(),
-                                            request: {
-                                                type: 'GET',
-                                                url: req.protocol + '://' + req.get('host') + '/baseWeapon/' + result._id,
-                                            }
-                                        }
-                                    };
-                                    res.status(201).json(response);
-                                }).catch(err => {
-                                    console.log(err);
-                                    res.status(500).json({
-                                        error: err
-                                    });
-                                });
-                        }).catch(err => {
-                            res.status(500).json({
-                                message: 'Rarity not found.',
-                                error: err
-                            });
-                        });
-                }).catch(err => {
-                    res.status(500).json({
-                        message: 'Weapon type not found.',
-                        error: err
-                    });
+            if (!element) {
+                return res.status(500).json({
+                    message: 'Element not found.'
                 });
+            }
+
+            return WeaponType.findById(req.body.weaponTypeId).exec();
+        }).then(weaponType => {
+            if (!weaponType) {
+                return res.status(500).json({
+                    message: 'Weapon type not found.'
+                });
+            }
+
+            return Rarity.findById(req.body.rarityId).exec();
+        }).then(rarity => {
+            if (!rarity) {
+                return res.status(500).json({
+                    message: 'Rarity not found.'
+                });
+            }
+
+            const baseWeapon = new BaseWeapon({
+                _id: new mongoose.Types.ObjectId(),
+                name: req.body.name,
+                maxUncap: req.body.maxUncap,
+                imgUrl: req.body.imgUrl,
+                usesSkillLevel: req.body.usesSkillLevel,
+                element: req.body.elementId,
+                weaponType: req.body.weaponTypeId,
+                rarity: req.body.rarityId
+            });
+            return baseWeapon.save();
+        }).then(result => {
+            const response = {
+                message: 'Create base weapon successfully.',
+                baseWeapon: {
+                    ...result.toJSON(),
+                    request: {
+                        type: 'GET',
+                        url: req.protocol + '://' + req.get('host') + '/baseWeapon/' + result._id,
+                    }
+                }
+            };
+            res.status(201).json(response);
         }).catch(err => {
             res.status(500).json({
-                message: 'Element not found.',
                 error: err
             });
         });
@@ -112,13 +108,13 @@ router.get('/:baseWeaponId', (req, res, next) => {
                 });
             }
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
         });
 });
 
+//TODO: TEST
 router.patch('/:baseWeaponId', (req, res, next) => {
     const id = req.params.baseWeaponId;
     const updateOps = {};
@@ -141,7 +137,6 @@ router.patch('/:baseWeaponId', (req, res, next) => {
             };
             res.status(200).json(response);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
@@ -154,10 +149,8 @@ router.delete('/:baseWeaponId', (req, res, next) => {
             _id: id
         }).exec()
         .then(result => {
-            console.log(result);
             res.status(200).json(result);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });

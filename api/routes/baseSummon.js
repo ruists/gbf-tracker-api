@@ -25,58 +25,52 @@ router.get('/', (req, res, next) => {
             };
             res.status(200).json(response);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
         });
 });
 
-//TODO: avoid promise nesting
+//TODO: TEST
 router.post('/', (req, res, next) => {
-    Element.findById(req.body.elementId)
-        .exec()
+    Element.findById(req.body.elementId).exec()
         .then(element => {
-            Rarity.findById(req.body.rarityId)
-                .exec()
-                .then(rarity => {
-                    const baseSummon = new BaseSummon({
-                        _id: new mongoose.Types.ObjectId(),
-                        name: req.body.name,
-                        maxUncap: req.body.maxUncap,
-                        imgUrl: req.body.imgUrl,
-                        element: req.body.elementId,
-                        rarity: req.body.rarityId
-                    });
-
-                    baseSummon.save()
-                        .then(result => {
-                            const response = {
-                                message: 'Created base summon successfully.',
-                                baseSummon: {
-                                    ...result.toJSON(),
-                                    request: {
-                                        type: 'GET',
-                                        url: req.protocol + '://' + req.get('host') + '/baseSummon/' + result._id,
-                                    }
-                                }
-                            };
-                            res.status(201).json(response);
-                        }).catch(err => {
-                            console.log(err);
-                            res.status(500).json({
-                                error: err
-                            });
-                        });
-                }).catch(err => {
-                    res.status(500).json({
-                        message: 'Rarity not found.',
-                        error: err
-                    });
+            if (!element) {
+                return res.status(500).json({
+                    message: 'Element not found.'
                 });
+            }
+            return Rarity.findById(req.body.rarityId).exec();
+        }).then(rarity => {
+            if (!rarity) {
+                return res.status(500).json({
+                    message: 'Rarity not found.'
+                });
+            }
+            const baseSummon = new BaseSummon({
+                _id: new mongoose.Types.ObjectId(),
+                name: req.body.name,
+                maxUncap: req.body.maxUncap,
+                imgUrl: req.body.imgUrl,
+                element: req.body.elementId,
+                rarity: req.body.rarityId
+            });
+
+            return baseSummon.save();
+        }).then(result => {
+            const response = {
+                message: 'Created base summon successfully.',
+                baseSummon: {
+                    ...result.toJSON(),
+                    request: {
+                        type: 'GET',
+                        url: req.protocol + '://' + req.get('host') + '/baseSummon/' + result._id,
+                    }
+                }
+            };
+            res.status(201).json(response);
         }).catch(err => {
             res.status(500).json({
-                message: 'Element not found.',
                 error: err
             });
         });
@@ -101,13 +95,13 @@ router.get('/:baseSummonId', (req, res, next) => {
                 });
             }
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
         });
 });
 
+//TODO: TEST
 router.patch('/:baseSummonId', (req, res, next) => {
     const id = req.params.BaseSummonId;
     const updateOps = {};
@@ -130,7 +124,6 @@ router.patch('/:baseSummonId', (req, res, next) => {
             };
             res.status(200).json(result);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
@@ -145,7 +138,6 @@ router.delete('/:baseSummonId', (req, res, next) => {
         .then(result => {
             res.status(200).json(result);
         }).catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
