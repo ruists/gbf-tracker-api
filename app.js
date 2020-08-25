@@ -16,6 +16,8 @@ const baseSummonRoutes = require('./api/routes/baseSummon');
 const weaponRoutes = require('./api/routes/weapon');
 const summonRoutes = require('./api/routes/summon');
 const characterRoutes = require('./api/routes/character');
+
+const userRoutes = require('./api/routes/user');
 //
 
 mongoose.connect('mongodb+srv://' +
@@ -47,6 +49,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 //Handle route requests
+app.use('/user', userRoutes);
+
 app.use('/element', elementRoutes);
 app.use('/race', raceRoutes);
 app.use('/rarity', rarityRoutes);
