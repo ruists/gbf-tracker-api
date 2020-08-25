@@ -82,7 +82,7 @@ router.get('/:weaponId', (req, res, next) => {
                 res.status(200).json(response);
             } else {
                 res.status(404).json({
-                    message: 'No valid entry for provided ID.'
+                    message: 'Weapon not found.'
                 });
             }
         }).catch(err => {

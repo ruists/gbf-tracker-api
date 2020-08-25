@@ -71,7 +71,7 @@ router.get('/:weaponTypeId', (req, res, next) => {
                 res.status(200).json(response);
             } else {
                 res.status(404).json({
-                    message: 'No valid entry found for provided ID.'
+                    message: 'Weapon type not found.'
                 });
             }
         }).catch(err => {
