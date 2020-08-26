@@ -18,6 +18,7 @@ const summonRoutes = require('./api/routes/summon');
 const characterRoutes = require('./api/routes/character');
 
 const userRoutes = require('./api/routes/user');
+const roleRoutes = require('./api/routes/role');
 //
 
 mongoose.connect('mongodb+srv://' +
@@ -29,7 +30,7 @@ mongoose.connect('mongodb+srv://' +
         useUnifiedTopology: true,
         useNewUrlParser: true
     });
-
+    
 //log incoming requests
 app.use(morgan('dev'));
 
@@ -50,6 +51,7 @@ app.use(cors(corsOptions));
 
 //Handle route requests
 app.use('/user', userRoutes);
+app.use('/role', roleRoutes);
 
 app.use('/element', elementRoutes);
 app.use('/race', raceRoutes);

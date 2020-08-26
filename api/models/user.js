@@ -22,5 +22,6 @@ const userSchema = mongoose.Schema({
 }, {
     collection: 'User'
 });
+userSchema.plugin(require('mongoose-autopopulate'));
 
 module.exports = mongoose.model('User', userSchema);
