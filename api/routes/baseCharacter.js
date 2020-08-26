@@ -34,7 +34,7 @@ router.get('/', (req, res, next) => {
         });
 });
 
-//TODO: Consider characters that have 2 weapon types
+//TODO: TEST CHANGES TO WEAPONTYPE VALIDATION
 router.post('/', checkAuth, (req, res, next) => {
     Element.findById(req.body.elementId).exec()
         .then(element => {
@@ -57,9 +57,21 @@ router.post('/', checkAuth, (req, res, next) => {
                     message: 'Style not found.'
                 });
             }
-            return WeaponType.findById(req.body.weaponTypeId).exec();
-        }).then(weaponType => {
-            if (!weaponType) {
+            const weaponTypeSearches = [];
+            for (const typeId of req.body.weaponTypeId) {
+                weaponTypeSearches.push(WeaponType.findById(typeId)).exec();
+            }
+            return Promise.all(weaponTypeSearches);
+        }).then(weaponTypes => {
+            if (weaponTypes.length > 1) { //multiple weapon types
+                for (const type of weaponTypes) {
+                    if (!type) {
+                        return res.status(500).json({
+                            message: 'One or more weapon types not found.'
+                        });
+                    }
+                }
+            } else if (!weaponTypes[0]) {
                 return res.status(500).json({
                     message: 'Weapon type not found.'
                 });
