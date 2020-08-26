@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../middleware/check-auth');
 
 const BaseSummon = require('../models/baseSummon');
 const Element = require('../models/element');
@@ -32,7 +33,7 @@ router.get('/', (req, res, next) => {
 });
 
 //TODO: TEST
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
     Element.findById(req.body.elementId).exec()
         .then(element => {
             if (!element) {
@@ -102,7 +103,7 @@ router.get('/:baseSummonId', (req, res, next) => {
 });
 
 //TODO: TEST
-router.patch('/:baseSummonId', (req, res, next) => {
+router.patch('/:baseSummonId', checkAuth, (req, res, next) => {
     const id = req.params.BaseSummonId;
     const updateOps = {};
     const keys = Object.keys(req.body);
@@ -130,7 +131,7 @@ router.patch('/:baseSummonId', (req, res, next) => {
         });
 });
 
-router.delete('/:baseSummonId', (req, res, next) => {
+router.delete('/:baseSummonId', checkAuth, (req, res, next) => {
     const id = req.params.BaseSummonId;
     BaseSummon.remove({
             _id: id

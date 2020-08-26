@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../middleware/check-auth');
 
 const Character = require('../models/character');
 const Element = require('../models/element');
@@ -34,7 +35,7 @@ router.get('/', (req, res, next) => {
 });
 
 //TODO: Consider characters that have 2 weapon types
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
     Element.findById(req.body.elementId).exec()
         .then(element => {
             if (!element) {
@@ -120,7 +121,7 @@ router.get('/:characterId', (req, res, next) => {
 });
 
 //TODO: TEST
-router.patch('/:characterId', (req, res, next) => {
+router.patch('/:characterId', checkAuth, (req, res, next) => {
     const id = req.params.characterId;
     const updateOps = {};
     const keys = Object.keys(req.body);
@@ -148,7 +149,7 @@ router.patch('/:characterId', (req, res, next) => {
         });
 });
 
-router.delete('/:characterId', (req, res, next) => {
+router.delete('/:characterId', checkAuth, (req, res, next) => {
     const id = req.params.characterId;
     Character.remove({
             _id: id

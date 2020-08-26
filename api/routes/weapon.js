@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../middleware/check-auth');
 
 const Weapon = require('../models/weapon');
 const BaseWeapon = require('../models/baseWeapon');
@@ -31,7 +32,7 @@ router.get('/', (req, res, next) => {
         });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
     BaseWeapon.findById(req.body.baseWeaponId)
         .exec()
         .then(baseWeapon => {
@@ -94,7 +95,7 @@ router.get('/:weaponId', (req, res, next) => {
 });
 
 //TODO: TEST
-router.patch('/:weaponId', (req, res, next) => {
+router.patch('/:weaponId', checkAuth, (req, res, next) => {
     const id = req.params.weaponId;
     const updateOps = {};
     const keys = Object.keys(req.body);

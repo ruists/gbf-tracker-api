@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../middleware/check-auth');
 
 const Rarity = require('../models/rarity');
 
@@ -29,7 +30,7 @@ router.get('/', (req, res, next) => {
         });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
     const rarity = new Rarity({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name
@@ -80,7 +81,7 @@ router.get('/:rarityId', (req, res, next) => {
 });
 
 //TODO: TEST
-router.patch('/:rarityId', (req, res, next) => {
+router.patch('/:rarityId', checkAuth, (req, res, next) => {
     const id = req.params.rarityId;
     const updateOps = {};
     const keys = Object.keys(req.body);
@@ -108,7 +109,7 @@ router.patch('/:rarityId', (req, res, next) => {
         });
 });
 
-router.delete('/:rarityId', (req, res, next) => {
+router.delete('/:rarityId', checkAuth, (req, res, next) => {
     const id = req.params.rarityId;
     Rarity.remove({
             _id: id

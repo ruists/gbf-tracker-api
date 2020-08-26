@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../middleware/check-auth');
 
 const WeaponType = require('../models/weaponType');
 
@@ -30,7 +31,7 @@ router.get('/', (req, res, next) => {
         });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
     const weaponType = new WeaponType({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name
@@ -83,7 +84,7 @@ router.get('/:weaponTypeId', (req, res, next) => {
 });
 
 //TODO: TEST
-router.patch('/:weaponTypeId', (req, res, next) => {
+router.patch('/:weaponTypeId', checkAuth, (req, res, next) => {
     const id = req.params.weaponTypeId;
     const updateOps = {};
     const keys = Object.keys(req.body);
@@ -112,7 +113,7 @@ router.patch('/:weaponTypeId', (req, res, next) => {
         });
 });
 
-router.delete('/:weaponTypeId', (req, res, next) => {
+router.delete('/:weaponTypeId', checkAuth, (req, res, next) => {
     const id = req.params.weaponTypeId;
     WeaponType.remove({
             _id: id
