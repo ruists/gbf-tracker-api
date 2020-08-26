@@ -115,7 +115,13 @@ router.delete('/:rarityId', checkAuth, (req, res, next) => {
             _id: id
         }).exec()
         .then(result => {
-            res.status(200).json(result);
+            res.status(200).json({
+                message: "Rarity deleted.",
+                request: {
+                    type: 'GET',
+                    url: req.protocol + '://' + req.get('host') + '/rarity/',
+                }
+            });
         }).catch(err => {
             res.status(500).json({
                 error: err

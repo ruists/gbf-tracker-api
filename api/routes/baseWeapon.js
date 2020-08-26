@@ -150,7 +150,13 @@ router.delete('/:baseWeaponId', checkAuth, (req, res, next) => {
             _id: id
         }).exec()
         .then(result => {
-            res.status(200).json(result);
+            res.status(200).json({
+                message: "Base weapon deleted.",
+                request: {
+                    type: 'GET',
+                    url: req.protocol + '://' + req.get('host') + '/baseWeapon/',
+                }
+            });
         }).catch(err => {
             res.status(500).json({
                 error: err

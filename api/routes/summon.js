@@ -128,7 +128,13 @@ router.delete('/:summonId', checkAuth, (req, res, next) => {
             _id: id
         }).exec()
         .then(result => {
-            res.status(200).json(result);
+            res.status(200).json({
+                message: "Summon deleted.",
+                request: {
+                    type: 'GET',
+                    url: req.protocol + '://' + req.get('host') + '/summon/',
+                }
+            });
         }).catch(err => {
             res.status(500).json({
                 error: err

@@ -120,7 +120,13 @@ router.delete('/:weaponTypeId', checkAuth, (req, res, next) => {
         }).exec()
         .then(result => {
             console.log(result);
-            res.status(200).json(result);
+            res.status(200).json({
+                message: "Weapon type deleted.",
+                request: {
+                    type: 'GET',
+                    url: req.protocol + '://' + req.get('host') + '/weaponType/',
+                }
+            });
         }).catch(err => {
             console.log(err);
             res.status(500).json({
