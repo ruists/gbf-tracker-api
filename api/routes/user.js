@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const User = require("../models/user");
 
@@ -41,10 +42,51 @@ router.post('/signup', (req, res, next) => {
         });
 });
 
+router.post('/login', (req, res, next) => {
+    User.find({
+            email: req.body.email
+        }).exec()
+        .then(result => {
+            if (result.length < 1) {
+                return res.status(401).json({
+                    message: 'Authentication failed.'
+                });
+            }
+
+            //user exists
+            bcrypt.compare(req.body.password, user[0].password, (err, equal) => {
+                if (err) {
+                    res.status(401).json({
+                        message: 'Authentication failed.'
+                    });
+                }
+                if (equal) {
+                    const token = jwt.sign({
+                        email: user[0].email,
+                        userId: user[0]._id
+                    }, process.env.JWT_KEY, {
+                        expiresIn: "1h"
+                    });
+                    res.status(200).json({
+                        message: 'Authentication successful.',
+                        token: token
+                    });
+                } else {
+                    res.status(401).json({
+                        message: 'Authentication failed.'
+                    });
+                }
+            });
+        }).catch(err => {
+
+        });
+});
+
 router.delete('/:userId', (req, res, next) => {
     User.remove(({
             _id: req.params.userId
-        })).exec()
+        }))
+        .exec()
         .then(result => {
             if (result.deletedCount) {
                 res.status(200).json({
