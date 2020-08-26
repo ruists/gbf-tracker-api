@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const checkAuth = require('../middleware/check-auth');
+const checkAdmin = require('../middleware/check-admin');
 
 const BaseCharacter = require('../models/baseCharacter');
 const Element = require('../models/element');
@@ -35,7 +36,7 @@ router.get('/', (req, res, next) => {
 });
 
 //TODO: TEST CHANGES TO WEAPONTYPE VALIDATION
-router.post('/', checkAuth, (req, res, next) => {
+router.post('/', checkAuth, checkAdmin, (req, res, next) => {
     Element.findById(req.body.elementId).exec()
         .then(element => {
             if (!element) {
@@ -144,7 +145,7 @@ router.get('/:baseCharacterId', (req, res, next) => {
 });
 
 //TODO: TEST
-router.patch('/:baseCharacterId', checkAuth, (req, res, next) => {
+router.patch('/:baseCharacterId', checkAuth, checkAdmin, (req, res, next) => {
     const id = req.params.baseCharacterId;
     const updateOps = {};
     const keys = Object.keys(req.body);
@@ -172,7 +173,7 @@ router.patch('/:baseCharacterId', checkAuth, (req, res, next) => {
         });
 });
 
-router.delete('/:baseCharacterId', checkAuth, (req, res, next) => {
+router.delete('/:baseCharacterId', checkAuth, checkAdmin, (req, res, next) => {
     const id = req.params.baseCharacterId;
     BaseCharacter.remove({
             _id: id

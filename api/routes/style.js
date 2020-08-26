@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const checkAuth = require('../middleware/check-auth');
+const checkAdmin = require('../middleware/check-admin');
 
 const Style = require('../models/style');
 
@@ -31,7 +32,7 @@ router.get('/', (req, res, next) => {
         });
 });
 
-router.post('/', checkAuth, (req, res, next) => {
+router.post('/', checkAuth, checkAdmin, (req, res, next) => {
     const style = new Style({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name
@@ -81,7 +82,7 @@ router.get('/:styleId', (req, res, next) => {
 });
 
 //TODO: TEST
-router.patch('/:styleId', checkAuth, (req, res, next) => {
+router.patch('/:styleId', checkAuth, checkAdmin, (req, res, next) => {
     const id = req.params.styleId;
     const updateOps = {};
     const keys = Object.keys(req.body);
@@ -110,7 +111,7 @@ router.patch('/:styleId', checkAuth, (req, res, next) => {
         });
 });
 
-router.delete('/:styleId', checkAuth, (req, res, next) => {
+router.delete('/:styleId', checkAuth, checkAdmin, (req, res, next) => {
     const id = req.params.styleId;
     Style.remove({
             _id: id

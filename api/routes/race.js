@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const checkAuth = require('../middleware/check-auth');
+const checkAdmin = require('../middleware/check-admin');
 
 const Race = require('../models/race');
 
@@ -30,7 +31,7 @@ router.get('/', (req, res, next) => {
         });
 });
 
-router.post('/', checkAuth, (req, res, next) => {
+router.post('/', checkAuth, checkAdmin, (req, res, next) => {
     const race = new Race({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name
@@ -81,7 +82,7 @@ router.get('/:raceId', (req, res, next) => {
 });
 
 //TODO: TEST
-router.patch('/:raceId', checkAuth, (req, res, next) => {
+router.patch('/:raceId', checkAuth, checkAdmin, (req, res, next) => {
     const id = req.params.raceId;
     const updateOps = {};
     const keys = Object.keys(req.body);
@@ -109,7 +110,7 @@ router.patch('/:raceId', checkAuth, (req, res, next) => {
         });
 });
 
-router.delete('/:raceId', checkAuth, (req, res, next) => {
+router.delete('/:raceId', checkAuth, checkAdmin, (req, res, next) => {
     const id = req.params.raceId;
     Race.remove({
             _id: id

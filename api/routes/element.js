@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const checkAuth = require('../middleware/check-auth');
+const checkAdmin = require('../middleware/check-admin');
 
 const Element = require('../models/element');
 
@@ -31,7 +32,7 @@ router.get('/', (req, res, next) => {
         });
 });
 
-router.post('/', checkAuth, (req, res, next) => {
+router.post('/', checkAuth, checkAdmin, (req, res, next) => {
     const element = new Element({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name
@@ -82,7 +83,7 @@ router.get('/:elementId', (req, res, next) => {
 });
 
 //TODO: TEST
-router.patch('/:elementId', checkAuth, (req, res, next) => {
+router.patch('/:elementId', checkAuth, checkAdmin, (req, res, next) => {
     const id = req.params.elementId;
     const updateOps = {};
     const keys = Object.keys(req.body);
@@ -110,7 +111,7 @@ router.patch('/:elementId', checkAuth, (req, res, next) => {
         });
 });
 
-router.delete('/:elementId', checkAuth, (req, res, next) => {
+router.delete('/:elementId', checkAuth, checkAdmin, (req, res, next) => {
     const id = req.params.elementId;
     Element.remove({
             _id: id

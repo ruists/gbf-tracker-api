@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const checkAuth = require('../middleware/check-auth');
+const checkAdmin = require('../middleware/check-admin');
 
 const BaseWeapon = require('../models/baseWeapon');
 const Element = require('../models/element');
@@ -35,7 +36,7 @@ router.get('/', (req, res, next) => {
 });
 
 //TODO: TEST
-router.post('/', checkAuth, (req, res, next) => {
+router.post('/', checkAuth, checkAdmin, (req, res, next) => {
     Element.findById(req.body.elementId).exec()
         .then(element => {
             if (!element) {
@@ -125,7 +126,7 @@ router.get('/:baseWeaponId', (req, res, next) => {
 });
 
 //TODO: TEST
-router.patch('/:baseWeaponId', checkAuth, (req, res, next) => {
+router.patch('/:baseWeaponId', checkAuth, checkAdmin, (req, res, next) => {
     const id = req.params.baseWeaponId;
     const updateOps = {};
     const keys = Object.keys(req.body);
@@ -153,7 +154,7 @@ router.patch('/:baseWeaponId', checkAuth, (req, res, next) => {
         });
 });
 
-router.delete('/:baseWeaponId', checkAuth, (req, res, next) => {
+router.delete('/:baseWeaponId', checkAuth, checkAdmin, (req, res, next) => {
     const id = req.params.baseWeaponId;
     BaseWeapon.remove({
             _id: id
