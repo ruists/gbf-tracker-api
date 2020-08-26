@@ -11,6 +11,13 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    role: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Role',
+        autopopulate: {
+            select: '-__v'
+        }
     }
 }, {
     collection: 'User'
