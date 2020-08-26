@@ -49,6 +49,9 @@ router.post('/', checkAuth, (req, res, next) => {
             });
             return character.save();
         }).then(result => {
+            if (res.statusCode === 500) {
+                return res;
+            }
             const response = {
                 message: 'Created character successfully',
                 character: {

@@ -46,6 +46,9 @@ router.post('/', checkAuth, (req, res, next) => {
 
             return WeaponType.findById(req.body.weaponTypeId).exec();
         }).then(weaponType => {
+            if (res.statusCode === 500) {
+                return res;
+            }
             if (!weaponType) {
                 return res.status(500).json({
                     message: 'Weapon type not found.'
@@ -54,6 +57,9 @@ router.post('/', checkAuth, (req, res, next) => {
 
             return Rarity.findById(req.body.rarityId).exec();
         }).then(rarity => {
+            if (res.statusCode === 500) {
+                return res;
+            }
             if (!rarity) {
                 return res.status(500).json({
                     message: 'Rarity not found.'
@@ -72,6 +78,9 @@ router.post('/', checkAuth, (req, res, next) => {
             });
             return baseWeapon.save();
         }).then(result => {
+            if (res.statusCode === 500) {
+                return res;
+            }
             const response = {
                 message: 'Create base weapon successfully.',
                 baseWeapon: {

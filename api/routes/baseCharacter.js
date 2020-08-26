@@ -45,6 +45,9 @@ router.post('/', checkAuth, (req, res, next) => {
             }
             return Rarity.findById(req.body.rarityId).exec();
         }).then(rarity => {
+            if (res.statusCode === 500) {
+                return res;
+            }
             if (!rarity) {
                 return res.status(500).json({
                     message: 'Rarity not found.'
@@ -52,6 +55,9 @@ router.post('/', checkAuth, (req, res, next) => {
             }
             return Style.findById(req.body.styleId).exec();
         }).then(style => {
+            if (res.statusCode === 500) {
+                return res;
+            }
             if (!style) {
                 return res.status(500).json({
                     message: 'Style not found.'
@@ -63,6 +69,9 @@ router.post('/', checkAuth, (req, res, next) => {
             }
             return Promise.all(weaponTypeSearches);
         }).then(weaponTypes => {
+            if (res.statusCode === 500) {
+                return res;
+            }
             if (weaponTypes.length > 1) { //multiple weapon types
                 for (const type of weaponTypes) {
                     if (!type) {
@@ -88,6 +97,9 @@ router.post('/', checkAuth, (req, res, next) => {
             });
             return bCharacter.save();
         }).then(result => {
+            if (res.statusCode === 500) {
+                return res;
+            }
             const response = {
                 message: 'Created base character successfully',
                 baseCharacter: {

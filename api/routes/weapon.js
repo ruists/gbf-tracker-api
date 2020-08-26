@@ -46,10 +46,13 @@ router.post('/', checkAuth, (req, res, next) => {
                 uncap: req.body.uncap,
                 level: req.body.level,
                 skillLevel: req.body.skillLevel,
-                baseWeapon = baseWeapon._id
+                baseWeapon: baseWeapon._id
             });
             return weapon.save();
         }).then(result => {
+            if (res.statusCode === 500) {
+                return res;
+            }
             const response = {
                 message: 'Created weapon successfully.',
                 weapon: {
