@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 
 const characterSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    name: {
-        type: String,
-        required: true
-    },
     level: {
         type: Number,
         required: true
@@ -14,34 +10,13 @@ const characterSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    element: {
+    baseCharacter: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Element',
+        ref: 'BaseCharacter',
         autopopulate: {
             select: '-__v'
         }
-    },
-    rarity: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Rarity',
-        autopopulate: {
-            select: '-__v'
-        }
-    },
-    style: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Style',
-        autopopulate: {
-            select: '-__v'
-        }
-    },
-    weaponType: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'WeaponType',
-        autopopulate: {
-            select: '-__v'
-        }
-    }]
+    }
 }, {
     collection: 'Character'
 });
