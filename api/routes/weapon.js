@@ -6,8 +6,11 @@ const checkAuth = require('../middleware/check-auth');
 const Weapon = require('../models/weapon');
 const BaseWeapon = require('../models/baseWeapon');
 
-router.get('/', (req, res, next) => {
-    Weapon.find()
+router.get('/', checkAuth, (req, res, next) => {
+    const userId = req.userData.userId;
+    Weapon.find({
+            user: userId
+        })
         .select('-__v')
         .exec()
         .then(result => {
@@ -71,19 +74,26 @@ router.post('/', checkAuth, (req, res, next) => {
         });
 });
 
-router.get('/:weaponId', (req, res, next) => {
+router.get('/:weaponId', checkAuth, (req, res, next) => {
     const id = req.params.weaponId;
+    const userId = req.userData.userId;
     Weapon.findById(id)
         .select('-__v')
         .exec()
         .then(result => {
             if (result) {
-                const response = {
-                    weapon: {
-                        ...result.toJSON()
-                    }
-                };
-                res.status(200).json(response);
+                if(result.user !== userId) {
+                    res.status(403).json({
+                        message: 'Unauthorized access to resource.'
+                    });
+                } else {
+                    const response = {
+                        weapon: {
+                            ...result.toJSON()
+                        }
+                    };
+                    res.status(200).json(response);
+                }
             } else {
                 res.status(404).json({
                     message: 'Weapon not found.'

@@ -6,8 +6,11 @@ const checkAuth = require('../middleware/check-auth');
 const Character = require('../models/character');
 const BaseCharacter = require('../models/baseCharacter');
 
-router.get('/', (req, res, next) => {
-    Character.find()
+router.get('/', checkAuth, (req, res, next) => {
+    const userId = req.userData.userId;
+    Character.find({
+            user: userId
+        })
         .select('-__v')
         .exec()
         .then(result => {
@@ -70,19 +73,26 @@ router.post('/', checkAuth, (req, res, next) => {
         });
 });
 
-router.get('/:characterId', (req, res, next) => {
+router.get('/:characterId', checkAuth, (req, res, next) => {
     const id = req.params.characterId;
+    const userId = req.userData.userId;
     Character.findById(id)
         .select('-__v')
         .exec()
         .then(result => {
             if (result) {
-                const response = {
-                    character: {
-                        ...result.toJSON()
-                    }
-                };
-                res.status(200).json(response);
+                if (result.user !== userId) {
+                    res.status(403).json({
+                        message: 'Unauthorized access to resource.'
+                    });
+                } else {
+                    const response = {
+                        character: {
+                            ...result.toJSON()
+                        }
+                    };
+                    res.status(200).json(response);
+                }
             } else {
                 res.status(404).json({
                     message: 'Character not found.'

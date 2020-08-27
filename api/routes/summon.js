@@ -6,8 +6,11 @@ const checkAuth = require('../middleware/check-auth');
 const Summon = require('../models/summon');
 const BaseSummon = require('../models/baseSummon');
 
-router.get('/', (req, res, next) => {
-    Summon.find()
+router.get('/', checkAuth, (req, res, next) => {
+    const userId = req.userData.userId;
+    Summon.find({
+            user: userId
+        })
         .select('-__v')
         .exec()
         .then(result => {
@@ -69,19 +72,26 @@ router.post('/', checkAuth, (req, res, next) => {
         });
 });
 
-router.get('/:summonId', (req, res, next) => {
+router.get('/:summonId', checkAuth, (req, res, next) => {
     const id = req.params.summonId;
+    const userId = req.userData.userId;
     Summon.findById(id)
         .select('-__v')
         .exec()
         .then(result => {
             if (result) {
-                const response = {
-                    summon: {
-                        ...result.toJSON()
-                    }
-                };
-                res.status(200).json(response);
+                if (result.user !== userId) {
+                    res.status(403).json({
+                        message: 'Unauthorized access to resource.'
+                    });
+                } else {
+                    const response = {
+                        summon: {
+                            ...result.toJSON()
+                        }
+                    };
+                    res.status(200).json(response);
+                }
             } else {
                 res.status(404).json({
                     message: 'Summon not found.'
