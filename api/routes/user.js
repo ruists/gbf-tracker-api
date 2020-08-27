@@ -31,30 +31,22 @@ router.post('/signup', (req, res, next) => {
                     message: 'An error occurred while creating the new account.'
                 });
             } else {
-                bcrypt.hash(req.body.password, 10, (err, hash) => {
-                    if (err) {
-                        return res.status(500).json({
-                            error: err
-                        });
-                    } else {
-                        const user = new User({
-                            _id: new mongoose.Types.ObjectId(),
-                            email: req.body.email,
-                            password: hash,
-                            role: role._id
-                        });
-                        user.save().then(result => {
-                            res.status(201).json({
-                                message: 'User created.'
-                            });
-                        }).catch(err => {
-                            res.status(500).json({
-                                error: err
-                            });
-                        });
-                    }
+                const user = new User({
+                    _id: new mongoose.Types.ObjectId(),
+                    email: req.body.email,
+                    password: req.body.password,
+                    role: role._id
                 });
+                return user.save();
             }
+        }).then(result => {
+            if (res.statusCode === 409 ||
+                res.statusCode === 500) {
+                return res;
+            }
+            res.status(201).json({
+                message: 'User created.'
+            });
         }).catch(err => {
             res.status(500).json({
                 error: err
