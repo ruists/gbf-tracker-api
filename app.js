@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
@@ -25,20 +24,20 @@ mongoose.connect('mongodb+srv://' +
     process.env.MONGO_ATLAS_U + ':' +
     process.env.MONGO_ATLAS_PW +
     '@trainingcluster.3uayb.mongodb.net/' +
-    process.env.MONGO_DB_NAME + 
+    process.env.MONGO_DB_NAME +
     '?retryWrites=true&w=majority', {
         useUnifiedTopology: true,
         useNewUrlParser: true
     });
-    
+
 //log incoming requests
 app.use(morgan('dev'));
 
 //parse requests' body
-app.use(bodyParser.urlencoded({
+app.use(express.urlencoded({
     extended: false
 }));
-app.use(bodyParser.json());
+app.use(express.json());
 
 
 const corsOptions = {
