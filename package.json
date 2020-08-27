@@ -3,12 +3,18 @@
   "version": "0.1.0",
   "description": "Tracker for GBF accounts",
   "main": "server.js",
+  "homepage": "https://github.com/ruists/gbf-tracker-api",
+  "bugs": {"url": "https://github.com/ruists/gbf-tracker-api/issues"},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ruists/gbf-tracker-api.git"
+  },
   "scripts": {
     "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Rui Santos",
-  "license": "ISC",
+  "author": "Rui Santos <ruimcs20@gmail.com>",
+  "license": "GPL-3.0-only",
   "dependencies": {
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
