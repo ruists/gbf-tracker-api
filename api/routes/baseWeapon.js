@@ -12,6 +12,7 @@ const WeaponType = require('../models/weaponType');
 router.get('/', (req, res, next) => {
     BaseWeapon.find()
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             const response = {
@@ -37,7 +38,7 @@ router.get('/', (req, res, next) => {
 
 //TODO: TEST
 router.post('/', checkAuth, checkAdmin, (req, res, next) => {
-    Element.findById(req.body.elementId).exec()
+    Element.findById(req.body.elementId).lean().exec()
         .then(element => {
             if (!element) {
                 return res.status(500).json({
@@ -45,7 +46,7 @@ router.post('/', checkAuth, checkAdmin, (req, res, next) => {
                 });
             }
 
-            return WeaponType.findById(req.body.weaponTypeId).exec();
+            return WeaponType.findById(req.body.weaponTypeId).lean().exec();
         }).then(weaponType => {
             if (res.statusCode === 500) {
                 return res;
@@ -56,7 +57,7 @@ router.post('/', checkAuth, checkAdmin, (req, res, next) => {
                 });
             }
 
-            return Rarity.findById(req.body.rarityId).exec();
+            return Rarity.findById(req.body.rarityId).lean().exec();
         }).then(rarity => {
             if (res.statusCode === 500) {
                 return res;
@@ -104,6 +105,7 @@ router.get('/:baseWeaponId', (req, res, next) => {
     const id = req.params.baseWeaponId;
     BaseWeapon.findById(id)
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             if (result) {

@@ -9,6 +9,7 @@ const Rarity = require('../models/rarity');
 router.get('/', (req, res, next) => {
     Rarity.find()
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             const response = {
@@ -60,6 +61,7 @@ router.get('/:rarityId', (req, res, next) => {
     const id = req.params.rarityId;
     Rarity.findById(id)
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             if (result) {

@@ -12,7 +12,7 @@ const checkAdmin = require('../middleware/check-admin');
 router.post('/signup', (req, res, next) => {
     User.find({
             email: req.body.email,
-        }).exec()
+        }).lean().exec()
         .then(user => {
             if (user.length >= 1) { //user found
                 return res.status(409).json({
@@ -57,7 +57,7 @@ router.post('/signup', (req, res, next) => {
 router.post('/signupAdmin', checkAuth, checkAdmin, (req, res, next) => {
     User.find({
             email: req.body.email,
-        }).exec()
+        }).lean().exec()
         .then(user => {
             if (user.length >= 1) { //user found
                 return res.status(409).json({

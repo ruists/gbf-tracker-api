@@ -9,6 +9,7 @@ const Style = require('../models/style');
 router.get('/', (req, res, next) => {
     Style.find()
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             const response = {
@@ -59,6 +60,7 @@ router.get('/:styleId', (req, res, next) => {
     const id = req.params.styleId;
     Style.findById(id)
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             if (result) {

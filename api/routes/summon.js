@@ -12,6 +12,7 @@ router.get('/', checkAuth, (req, res, next) => {
             user: userId
         })
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             const response = {
@@ -38,6 +39,7 @@ router.get('/', checkAuth, (req, res, next) => {
 //TODO: TEST
 router.post('/', checkAuth, (req, res, next) => {
     BaseSummon.findById(req.body.baseSummonId)
+        .lean()
         .exec()
         .then(baseSummon => {
             if (!baseSummon) {
@@ -77,6 +79,7 @@ router.get('/:summonId', checkAuth, (req, res, next) => {
     const userId = req.userData.userId;
     Summon.findById(id)
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             if (result) {

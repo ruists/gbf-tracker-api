@@ -12,6 +12,7 @@ router.get('/', checkAuth, (req, res, next) => {
             user: userId
         })
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             const response = {
@@ -34,9 +35,10 @@ router.get('/', checkAuth, (req, res, next) => {
         });
 });
 
-//TODO: Consider characters that have 2 weapon types
 router.post('/', checkAuth, (req, res, next) => {
-    BaseCharacter.findById(req.body.baseCharacterId).exec()
+    BaseCharacter.findById(req.body.baseCharacterId)
+        .lean()
+        .exec()
         .then(baseCharacter => {
             if (!baseCharacter) {
                 return res.status(500).json({
@@ -78,6 +80,7 @@ router.get('/:characterId', checkAuth, (req, res, next) => {
     const userId = req.userData.userId;
     Character.findById(id)
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             if (result) {

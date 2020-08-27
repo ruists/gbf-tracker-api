@@ -9,6 +9,7 @@ const Element = require('../models/element');
 router.get('/', (req, res, next) => {
     Element.find()
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             const response = {
@@ -61,6 +62,7 @@ router.get('/:elementId', (req, res, next) => {
     const id = req.params.elementId;
     Element.findById(id)
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             if (result) {

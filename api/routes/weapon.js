@@ -37,6 +37,7 @@ router.get('/', checkAuth, (req, res, next) => {
 
 router.post('/', checkAuth, (req, res, next) => {
     BaseWeapon.findById(req.body.baseWeaponId)
+        .lean()
         .exec()
         .then(baseWeapon => {
             if (!baseWeapon) {
@@ -82,7 +83,7 @@ router.get('/:weaponId', checkAuth, (req, res, next) => {
         .exec()
         .then(result => {
             if (result) {
-                if(result.user !== userId) {
+                if (result.user !== userId) {
                     res.status(403).json({
                         message: 'Unauthorized access to resource.'
                     });

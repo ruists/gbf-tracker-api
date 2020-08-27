@@ -13,6 +13,7 @@ const WeaponType = require('../models/weaponType');
 router.get('/', (req, res, next) => {
     BaseCharacter.find()
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             const response = {
@@ -37,14 +38,14 @@ router.get('/', (req, res, next) => {
 
 //TODO: TEST CHANGES TO WEAPONTYPE VALIDATION
 router.post('/', checkAuth, checkAdmin, (req, res, next) => {
-    Element.findById(req.body.elementId).exec()
+    Element.findById(req.body.elementId).lean().exec()
         .then(element => {
             if (!element) {
                 return res.status(500).json({
                     message: 'Element not found.'
                 });
             }
-            return Rarity.findById(req.body.rarityId).exec();
+            return Rarity.findById(req.body.rarityId).lean().exec();
         }).then(rarity => {
             if (res.statusCode === 500) {
                 return res;
@@ -54,7 +55,7 @@ router.post('/', checkAuth, checkAdmin, (req, res, next) => {
                     message: 'Rarity not found.'
                 });
             }
-            return Style.findById(req.body.styleId).exec();
+            return Style.findById(req.body.styleId).lean().exec();
         }).then(style => {
             if (res.statusCode === 500) {
                 return res;
@@ -66,7 +67,7 @@ router.post('/', checkAuth, checkAdmin, (req, res, next) => {
             }
             const weaponTypeSearches = [];
             for (const typeId of req.body.weaponTypeId) {
-                weaponTypeSearches.push(WeaponType.findById(typeId)).exec();
+                weaponTypeSearches.push(WeaponType.findById(typeId).lean().exec());
             }
             return Promise.all(weaponTypeSearches);
         }).then(weaponTypes => {
@@ -123,6 +124,7 @@ router.get('/:baseCharacterId', (req, res, next) => {
     const id = req.params.baseCharacterId;
     BaseCharacter.findById(id)
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             if (result) {

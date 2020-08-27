@@ -9,6 +9,7 @@ const WeaponType = require('../models/weaponType');
 router.get('/', (req, res, next) => {
     WeaponType.find()
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             const response = {
@@ -62,6 +63,7 @@ router.get('/:weaponTypeId', (req, res, next) => {
     const id = req.params.weaponTypeId;
     WeaponType.findById(id)
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             if (result) {

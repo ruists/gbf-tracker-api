@@ -9,6 +9,7 @@ const Race = require('../models/race');
 router.get('/', (req, res, next) => {
     Race.find()
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             const response = {
@@ -60,6 +61,7 @@ router.get('/:raceId', (req, res, next) => {
     const id = req.params.raceId;
     Race.findById(id)
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             if (result) {

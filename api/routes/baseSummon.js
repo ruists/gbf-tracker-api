@@ -11,6 +11,7 @@ const Rarity = require('../models/rarity');
 router.get('/', (req, res, next) => {
     BaseSummon.find()
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             const response = {
@@ -35,14 +36,14 @@ router.get('/', (req, res, next) => {
 
 //TODO: TEST
 router.post('/', checkAuth, checkAdmin, (req, res, next) => {
-    Element.findById(req.body.elementId).exec()
+    Element.findById(req.body.elementId).lean().exec()
         .then(element => {
             if (!element) {
                 return res.status(500).json({
                     message: 'Element not found.'
                 });
             }
-            return Rarity.findById(req.body.rarityId).exec();
+            return Rarity.findById(req.body.rarityId).lean().exec();
         }).then(rarity => {
             if (res.statusCode === 500) {
                 return res;
@@ -88,6 +89,7 @@ router.get('/:baseSummonId', (req, res, next) => {
     const id = req.params.BaseSummonId;
     BaseSummon.findById(id)
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             if (result) {
