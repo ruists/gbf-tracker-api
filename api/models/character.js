@@ -16,6 +16,10 @@ const characterSchema = mongoose.Schema({
         autopopulate: {
             select: '-__v'
         }
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, {
     collection: 'Character'

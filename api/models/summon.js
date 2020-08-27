@@ -17,10 +17,9 @@ const summonSchema = mongoose.Schema({
             select: '-__v'
         }
     },
-    active: {
-        type: Boolean,
-        required: true,
-        default: true
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, {
     collection: 'Summon'
