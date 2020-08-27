@@ -27,14 +27,11 @@ userSchema.plugin(require('mongoose-autopopulate'));
 
 userSchema.pre('save', async function (next) {
     const user = this;
-    console.log('Trying to hash password...');
     bcrypt.hash(this.password, 10, (err, hash) => {
         if (err) {
-            console.log('error hash');
             throw err;
         }
 
-        console.log('hashed password successfully...')
         this.password = hash;
         next();
     });
