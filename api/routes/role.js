@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../middleware/check-auth');
+const checkAdmin = require('../middleware/check-admin');
 
 const Role = require('../models/role');
 
-router.get('/', (req, res, next) => {
+router.get('/', checkAuth, checkAdmin, (req, res, next) => {
     Role.find()
         .select('-__v')
+        .lean()
         .exec()
         .then(result => {
             const response = {
@@ -29,7 +32,7 @@ router.get('/', (req, res, next) => {
         });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, checkAdmin, (req, res, next) => {
     const role = new Role({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name
