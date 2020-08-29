@@ -1,7 +1,7 @@
 {
   "name": "gbf-tracker",
   "version": "0.2.0",
-  "description": "Tracker for GBF accounts",
+  "description": "Tracker for GBF inventories",
   "main": "server.js",
   "homepage": "https://github.com/ruists/gbf-tracker-api",
   "bugs": {"url": "https://github.com/ruists/gbf-tracker-api/issues"},
