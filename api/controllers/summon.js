@@ -46,8 +46,7 @@ exports.summon_create = (req, res, next) => {
                 _id: new mongoose.Types.ObjectId,
                 uncap: req.body.uncap,
                 level: req.body.level,
-                baseSummon: baseSummon._id,
-                active: true
+                baseSummon: baseSummon._id
             });
             return summon.save();
         }).then(result => {
