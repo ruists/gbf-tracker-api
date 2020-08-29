@@ -19,10 +19,7 @@ const characterSchema = mongoose.Schema({
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        autopopulate: {
-            select: '_id'
-        }
+        ref: 'User'
     }
 }, {
     collection: 'Character'
