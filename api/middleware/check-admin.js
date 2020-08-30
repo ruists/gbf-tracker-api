@@ -4,6 +4,7 @@ module.exports = (req, res, next) => {
     const id = req.userData.userId;
 
     User.findById(id)
+        .populate('role', 'name')
         .lean()
         .exec()
         .then(user => {
@@ -12,7 +13,7 @@ module.exports = (req, res, next) => {
                     message: 'Authorization failed.'
                 });
             }
-
+            
             if (user.role.name.valueOf() === "Admin") {
                 next();
             } else {
