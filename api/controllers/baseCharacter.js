@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const BaseCharacter = require('../models/baseCharacter');
 const Element = require('../models/element');
 const Rarity = require('../models/rarity');
+const Race = require('../models/race');
 const Style = require('../models/style');
 const WeaponType = require('../models/weaponType');
 
@@ -37,6 +38,16 @@ exports.baseCharacter_create = (req, res, next) => {
             if (!element) {
                 return res.status(500).json({
                     message: 'Element not found.'
+                });
+            }
+            return Race.findById(req.body.raceId).lean.exec();
+        }).then(race => {
+            if (res.statusCode === 500) {
+                return res;
+            }
+            if (!race) {
+                return res.status(500).json({
+                    message: 'Race not found.'
                 });
             }
             return Rarity.findById(req.body.rarityId).lean().exec();
