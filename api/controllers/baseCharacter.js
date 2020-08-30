@@ -86,9 +86,11 @@ exports.baseCharacter_create = (req, res, next) => {
                 _id: new mongoose.Types.ObjectId(),
                 name: req.body.name,
                 maxUncap: req.body.maxUncap,
+                imgUrl: req.body.imgUrl,
                 element: req.body.elementId,
                 rarity: req.body.rarityId,
                 style: req.body.styleId,
+                race: req.body.raceId,
                 weaponType: req.body.weaponTypeId
             });
             return bCharacter.save();
