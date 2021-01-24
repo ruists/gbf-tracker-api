@@ -6,6 +6,10 @@ const baseSummonSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    baseUncap: {
+        type: Number,
+        required: true
+    },
     maxUncap: {
         type: Number,
         required: true
