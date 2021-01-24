@@ -8,19 +8,13 @@ router.get('/',
     BaseCharacterController.baseCharacter_getAll);
 
 //TODO: TEST CHANGES TO WEAPONTYPE VALIDATION
-router.post('/',
-    checkAuth,
-    checkAdmin,
-    BaseCharacterController.baseCharacter_create);
+//router.post('/', checkAuth, checkAdmin, BaseCharacterController.baseCharacter_create);
 
 router.get('/:baseCharacterId',
     BaseCharacterController.baseCharacter_getBaseCharacter);
 
 //TODO: TEST
-router.patch('/:baseCharacterId',
-    checkAuth,
-    checkAdmin,
-    BaseCharacterController.baseCharacter_edit);
+//router.patch('/:baseCharacterId', checkAuth, checkAdmin, BaseCharacterController.baseCharacter_edit);
 
 router.delete('/:baseCharacterId',
     checkAuth,

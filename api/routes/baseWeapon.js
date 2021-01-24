@@ -8,19 +8,13 @@ router.get('/',
     BaseWeaponController.baseWeapon_getAll);
 
 //TODO: TEST
-router.post('/',
-    checkAuth,
-    checkAdmin,
-    BaseWeaponController.baseWeapon_create);
+//router.post('/', checkAuth, checkAdmin, BaseWeaponController.baseWeapon_create);
 
 router.get('/:baseWeaponId',
     BaseWeaponController.baseWeapon_getBaseWeapon);
 
 //TODO: TEST
-router.patch('/:baseWeaponId',
-    checkAuth,
-    checkAdmin,
-    BaseWeaponController.baseWeapon_edit);
+//router.patch('/:baseWeaponId', checkAuth, checkAdmin, BaseWeaponController.baseWeapon_edit);
 
 router.delete('/:baseWeaponId',
     checkAuth,

@@ -8,19 +8,13 @@ router.get('/',
     BaseSummonController.baseSummon_getAll);
 
 //TODO: TEST
-router.post('/',
-    checkAuth,
-    checkAdmin,
-    BaseSummonController.baseSummon_create);
+//router.post('/', checkAuth, checkAdmin, BaseSummonController.baseSummon_create);
 
 router.get('/:baseSummonId',
     BaseSummonController.baseSummon_getBaseSummon);
 
 //TODO: TEST
-router.patch('/:baseSummonId',
-    checkAuth,
-    checkAdmin,
-    BaseSummonController.baseSummon_edit);
+//router.patch('/:baseSummonId', checkAuth, checkAdmin, BaseSummonController.baseSummon_edit);
 
 router.delete('/:baseSummonId',
     checkAuth,
