@@ -1,5 +1,5 @@
 {
-  "name": "gbf-tracker",
+  "name": "gbf-tracker-api",
   "version": "0.3.0",
   "description": "API for GBF collection tracker",
   "main": "server.js",
