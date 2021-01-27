@@ -13,7 +13,7 @@ exports.element_getAll = (req, res, next) => {
                 count: result.length,
                 elements: result.map(element => {
                     return {
-                        ...element.toJSON(),
+                        element,
                         request: {
                             type: 'GET',
                             url: req.protocol + '://' + req.get('host') + '/element/' + element._id
@@ -65,7 +65,7 @@ exports.element_getElement = (req, res, next) => {
             if (result) {
                 const response = {
                     element: {
-                        ...result.toJSON()
+                        result
                     }
                 };
                 res.status(200).json(response);

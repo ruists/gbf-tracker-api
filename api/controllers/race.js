@@ -11,7 +11,7 @@ exports.race_getAll = (req, res, next) => {
                 count: result.length,
                 races: result.map(race => {
                     return {
-                        ...race.toJSON(),
+                        race,
                         request: {
                             type: 'GET',
                             url: req.protocol + '://' + req.get('host') + '/race/' + race._id,

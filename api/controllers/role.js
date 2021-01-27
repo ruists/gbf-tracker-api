@@ -11,7 +11,7 @@ exports.role_getAll = (req, res, next) => {
                 count: result.length,
                 roles: result.map(role => {
                     return {
-                        ...role.toJSON(),
+                        role,
                         request: {
                             type: 'GET',
                             url: req.protocol + '://' + req.get('host') + '/role/' + role._id,
