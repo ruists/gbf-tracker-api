@@ -14,9 +14,9 @@ exports.baseCharacter_getAll = (req, res, next) => {
     .then((result) => {
       const response = {
         count: result.length,
-        baseCharacters: result.map((bCharacter) => {
+        baseCharacters: result.map((baseCharacter) => {
           return {
-            bCharacter,
+            baseCharacter,
             request: {
               type: "GET",
               url:
@@ -24,7 +24,7 @@ exports.baseCharacter_getAll = (req, res, next) => {
                 "://" +
                 req.get("host") +
                 "/baseCharacter/" +
-                character._id
+                baseCharacter._id
             }
           };
         })

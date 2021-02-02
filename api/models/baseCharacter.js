@@ -14,13 +14,13 @@ const baseCharacterSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    race: {
+    race: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Race',
         autopopulate: {
             select: '-__v'
         }
-    },
+    }],
     element: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Element',
