@@ -30,13 +30,21 @@ exports.user_create = (req, res, next) => {
           message: "An error occurred while creating the new account."
         });
       } else {
-        const user = new User({
-          _id: new mongoose.Types.ObjectId(),
-          email: req.body.email,
-          password: req.body.password,
-          role: role._id
+        bcrypt.hash(req.body.password, 10, (err, hash) => {
+          if (err) {
+            return res.status(500).json({
+              error: err
+            });
+          } else {
+            const user = new User({
+              _id: new mongoose.Types.ObjectId(),
+              email: req.body.email,
+              password: hash,
+              role: role._id
+            });
+            return user.save();
+          }
         });
-        return user.save();
       }
     })
     .then((result) => {
