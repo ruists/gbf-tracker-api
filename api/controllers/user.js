@@ -144,7 +144,10 @@ exports.user_login = (req, res, next) => {
           );
           res.status(200).json({
             message: "Authentication successful.",
-            token: token
+            user: {
+              name: req.body.email,
+              token: token
+            }
           });
         } else {
           res.status(401).json({
