@@ -139,14 +139,13 @@ exports.character_edit = (req, res, next) => {
           message: "Unauthorized access to resource."
         });
       } else {
-        Character.update(
+        Character.updateOne(
           {
             _id: id
           },
           {
             $set: updateOps
-          }
-          )
+          })
           .exec()
           .then((result) => {
             const response = {
@@ -175,7 +174,6 @@ exports.character_edit = (req, res, next) => {
         error: err
       });
     });
-    
   };
   
   exports.character_delete = (req, res, next) => {
@@ -205,9 +203,9 @@ exports.character_edit = (req, res, next) => {
               }
             });
           })
-          .catch((err) => {
+          .catch((err1) => {
             res.status(500).json({
-              error: err
+              error: err1
             });
           });
         }
