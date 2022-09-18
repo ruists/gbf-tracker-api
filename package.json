@@ -1,6 +1,6 @@
 {
   "name": "gbf-tracker-api",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "API for GBF collection tracker",
   "main": "server.js",
   "homepage": "https://github.com/ruists/gbf-tracker-api",

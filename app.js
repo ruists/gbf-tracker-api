@@ -25,12 +25,11 @@ const userRoutes = require('./api/routes/user');
 const roleRoutes = require('./api/routes/role');
 //
 
-mongoose.connect('mongodb+srv://' +
-    process.env.MONGO_ATLAS_U + ':' +
-    process.env.MONGO_ATLAS_PW +
-    '@trainingcluster.3uayb.mongodb.net/' +
-    process.env.MONGO_DB_NAME +
-    '?retryWrites=true&w=majority', {
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
+mongoose.connect(process.env.DB_CONN_STRING , {
         useUnifiedTopology: true,
         useNewUrlParser: true
     });
