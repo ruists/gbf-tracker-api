@@ -5,9 +5,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const apicache = require('apicache');
 
-//Load .env into process.env
-require('dotenv').config();
-
 //Routes
 const elementRoutes = require('./api/routes/element');
 const raceRoutes = require('./api/routes/race');
@@ -25,11 +22,17 @@ const userRoutes = require('./api/routes/user');
 const roleRoutes = require('./api/routes/role');
 //
 
+//Load .env into process.env
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 
-mongoose.connect(process.env.DB_CONN_STRING , {
+mongoose.connect('mongodb+srv://' +
+    process.env.MONGO_ATLAS_U + ':' +
+    process.env.MONGO_ATLAS_PW +
+    '@trainingcluster.3uayb.mongodb.net/' +
+    process.env.MONGO_DB_NAME +
+    '?retryWrites=true&w=majority', {
         useUnifiedTopology: true,
         useNewUrlParser: true
     });
@@ -46,7 +49,6 @@ app.use(express.json());
 //set up caching
 let cache = apicache.middleware;
 app.use(cache('5 minutes'));
-
 
 const corsOptions = {
     optionSuccessStatus: 200,
