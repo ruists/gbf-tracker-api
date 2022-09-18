@@ -3,6 +3,10 @@ const app = express();
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const apicache = require('apicache');
+
+//Load .env into process.env
+require('dotenv').config();
 
 //Routes
 const elementRoutes = require('./api/routes/element');
@@ -39,6 +43,10 @@ app.use(express.urlencoded({
     extended: false
 }));
 app.use(express.json());
+
+//set up caching
+let cache = apicache.middleware;
+app.use(cache('5 minutes'));
 
 
 const corsOptions = {

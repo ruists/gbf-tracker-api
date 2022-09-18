@@ -18,8 +18,10 @@
   "author": "Rui Santos <ruimcs20@gmail.com>",
   "license": "GPL-3.0-only",
   "dependencies": {
+    "apicache": "^1.6.3",
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.2",
     "express": "^4.17.1",
     "express-validator": "^6.6.1",
     "jsonwebtoken": "^8.5.1",
